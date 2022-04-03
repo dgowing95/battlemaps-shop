@@ -30,7 +30,7 @@ resource "aws_launch_template" "dmz" {
     instance_type = var.nat_instance
     key_name = aws_key_pair.key.key_name
     iam_instance_profile {
-        name = aws_iam_role.dmz_role.arn
+        name = aws_iam_role.dmz_role.name
     }
     network_interfaces {
         associate_public_ip_address = true
