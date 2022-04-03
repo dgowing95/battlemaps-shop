@@ -11,7 +11,6 @@ variable "secret_key" {
 }
 variable "nat_ami" {
   type = string
-  default = "ami-0b50645ac1261267b"
 }
 variable "nat_instance" {
   type = string
