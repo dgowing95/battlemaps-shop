@@ -11,7 +11,8 @@ resource "aws_subnet" "private" {
 
   vpc_id     = aws_vpc.vpc.id
   cidr_block = cidrsubnet(aws_vpc.vpc.cidr_block, 8, count.index)
-
+  map_public_ip_on_launch = false
+  
   tags = {
     Name = "priv_subnet_${count.index}"
   }
