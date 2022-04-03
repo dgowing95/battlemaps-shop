@@ -1,5 +1,8 @@
 resource "aws_vpc" "vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "30.0.0.0/16"
+  tags = {
+      Name = "Battlemap VPC"
+  }
 }
 
 data "aws_availability_zones" "azs" {
@@ -12,7 +15,7 @@ resource "aws_subnet" "private" {
   vpc_id     = aws_vpc.vpc.id
   cidr_block = cidrsubnet(aws_vpc.vpc.cidr_block, 8, count.index)
   map_public_ip_on_launch = false
-  
+
   tags = {
     Name = "priv_subnet_${count.index}"
   }
