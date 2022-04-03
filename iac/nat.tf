@@ -29,6 +29,10 @@ resource "aws_launch_template" "dmz" {
     image_id = var.nat_ami
     instance_type = var.nat_instance
     key_name = aws_key_pair.key.key_name
+    vpc_security_group_ids = [aws_security_group.dmz.id]
+    iam_instance_profile {
+        name = aws_iam_role.dmz_role.name
+    }
     network_interfaces {
         associate_public_ip_address = true
     }
@@ -42,4 +46,60 @@ aws ec2 associate-address \
     --allocation-id ${aws_eip.dmz.allocation_id} --region eu-west-2"
 EOF
     )
+}
+
+resource "aws_security_group" "dmz" {
+    name = "DMZ_Access"
+    description = "Controls ingress and egress to the DMZ Nat Gateway"
+    vpc_id = aws_vpc.vpc.id
+
+    ingress {
+        description = "Ingress"
+        from_port = 0
+        to_port = 0
+        protocol = -1
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = -1
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    tags = {
+        Name = "DMZ_Access"
+    }
+}
+
+resource "aws_iam_role" "dmz_role" {
+    name = "dmz_role"
+
+    assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+
+    inline_policy {
+        name = "ec2_access"
+
+        policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+            {
+            Action   = ["ec2:*"]
+            Effect   = "Allow"
+            Resource = "*"
+            },
+        ]
+        })
+    }
 }
