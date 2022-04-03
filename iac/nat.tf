@@ -29,12 +29,14 @@ resource "aws_launch_template" "dmz" {
     image_id = var.nat_ami
     instance_type = var.nat_instance
     key_name = aws_key_pair.key.key_name
-    vpc_security_group_ids = [aws_security_group.dmz.id]
     iam_instance_profile {
         name = aws_iam_role.dmz_role.name
     }
     network_interfaces {
         associate_public_ip_address = true
+        security_groups = [
+            aws_security_group.dmz.id
+        ]
     }
     user_data = base64encode(<<EOF
 "#!/bin/bash
