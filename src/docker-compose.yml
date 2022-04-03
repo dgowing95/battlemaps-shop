@@ -1,0 +1,19 @@
+version: '3.4'
+services:
+  wordpress:
+    image: wordpress:php8.0-apache
+    ports:
+      - 8080:80
+    env_file: .env
+
+  database:
+    image: mariadb:10.8.2-rc
+    ports:
+      - 3306:3306
+    env_file: .env
+    volumes:
+      - data:/var/lib/mysql
+
+volumes:
+  data:
+
