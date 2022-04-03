@@ -39,38 +39,64 @@ resource "aws_launch_template" "dmz" {
         ]
     }
     user_data = base64encode(<<EOF
-"#!/bin/bash
+#!/bin/bash
 sudo apt-get update
 sudo apt-get install awscli -y
-aws ec2 disassociate-address --public-ip ${aws_eip.dmz.public_ip} --region ${var.region}
+aws ec2 disassociate-address \
+    --association-id ${aws_eip.dmz.association_id} \
+    --public-ip ${aws_eip.dmz.public_ip} \
+    --region ${var.region}
 aws ec2 associate-address \
     --instance-id "$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)" \
-    --allocation-id ${aws_eip.dmz.allocation_id} --region eu-west-2"
+    --allocation-id ${aws_eip.dmz.allocation_id} --region ${var.region}
 EOF
     )
 }
 
 resource "aws_security_group" "dmz" {
-    name = "DMZ_Access"
-    description = "Controls ingress and egress to the DMZ Nat Gateway"
+    name = "nat-egress-allowed"
+    description = "Allows egress through the DMZ NAT gateway"
     vpc_id = aws_vpc.vpc.id
-
-    ingress {
-        description = "Ingress"
-        from_port = 0
-        to_port = 0
-        protocol = -1
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = -1
-        cidr_blocks = ["0.0.0.0/0"]
-    }
     tags = {
-        Name = "DMZ_Access"
+        Name = "nat-egress-allowed"
     }
+}
+
+resource "aws_security_group_rule" "vpc_ingress" {
+    type = "ingress"
+    description = "Allow ingress from VPC"
+    from_port = 0
+    to_port = 65535
+    protocol = -1
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
+    security_group_id = aws_security_group.dmz.id
+}
+resource "aws_security_group_rule" "ssh_ingress" {
+    type = "ingress"
+    description = "Allow SSH ingress"
+    from_port = 22
+    to_port = 22
+    protocol = "TCP"
+    cidr_blocks = ["80.220.141.242/32"]
+    security_group_id = aws_security_group.dmz.id
+}
+resource "aws_security_group_rule" "egress_http" {
+    type = "egress"
+    description = "Allow http egress"
+    from_port = 80
+    to_port = 80
+    protocol = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+    security_group_id = aws_security_group.dmz.id
+}
+resource "aws_security_group_rule" "egress_https" {
+    type = "egress"
+    description = "Allow https egress"
+    from_port = 443
+    to_port = 443
+    protocol = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+    security_group_id = aws_security_group.dmz.id
 }
 
 resource "aws_iam_role" "dmz_role" {
