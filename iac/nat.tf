@@ -29,6 +29,7 @@ resource "aws_eip_association" "dmz_assoc" {
 
 resource "aws_network_interface" "dmz_eni" {
   subnet_id = aws_subnet.public[0].id
+  source_dest_check = false
   security_groups = [
       aws_security_group.dmz.id
   ]
