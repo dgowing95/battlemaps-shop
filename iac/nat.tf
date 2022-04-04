@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "dmz" {
     desired_capacity = 1
     health_check_grace_period = 300
     availability_zones = [
-        data.aws_availability_zones.azs.zone_ids.0
+        data.aws_availability_zones.azs.names.0
     ]
 
 
