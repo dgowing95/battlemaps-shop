@@ -60,11 +60,17 @@ resource "aws_launch_template" "dmz" {
         tags = {
         Name = "DMZ-Instance-0"
         }
-    }
+    } 
     user_data = base64encode(<<EOF
 #!/bin/bash
 sudo apt-get update
 sudo apt-get install awscli -y
+echo '#!/bin/sh
+echo 1 > /proc/sys/net/ipv4/ip_forward
+iptables -t nat -A POSTROUTING -s ${aws_vpc.vpc.cidr_block} -j MASQUERADE
+' | sudo tee /etc/network/if-pre-up.d/nat-setup
+sudo chmod +x /etc/network/if-pre-up.d/nat-setup
+sudo /etc/network/if-pre-up.d/nat-setup
 EOF
     )
 }
