@@ -19,6 +19,18 @@ resource "aws_eip" "dmz" {
     }
 }
 
+resource "aws_eip_association" "dmz_assoc" {
+    allocation_id = aws_eip.dmz.id
+    network_interface_id = aws_network_interface.dmz_eni.id
+}
+
+resource "aws_network_interface" "dmz_eni" {
+  subnet_id = aws_subnet.public[0].id
+  security_groups = [
+      aws_security_group.dmz.id
+  ]
+}
+
 resource "aws_key_pair" "key" {
     key_name = "dan-key"
     public_key = var.public_ssh_key
@@ -33,22 +45,12 @@ resource "aws_launch_template" "dmz" {
         name = aws_iam_instance_profile.dmz_profile.name
     }
     network_interfaces {
-        associate_public_ip_address = true
-        security_groups = [
-            aws_security_group.dmz.id
-        ]
+        network_interface_id = aws_network_interface.dmz_eni.id
     }
     user_data = base64encode(<<EOF
 #!/bin/bash
 sudo apt-get update
 sudo apt-get install awscli -y
-aws ec2 disassociate-address \
-    --association-id ${aws_eip.dmz.association_id} \
-    --public-ip ${aws_eip.dmz.public_ip} \
-    --region ${var.region}
-aws ec2 associate-address \
-    --instance-id "$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)" \
-    --allocation-id ${aws_eip.dmz.allocation_id} --region ${var.region}
 EOF
     )
 }
@@ -80,30 +82,12 @@ resource "aws_security_group_rule" "ssh_ingress" {
     cidr_blocks = ["80.220.141.242/32"]
     security_group_id = aws_security_group.dmz.id
 }
-resource "aws_security_group_rule" "egress_http" {
+resource "aws_security_group_rule" "dmz_egress" {
     type = "egress"
-    description = "Allow http egress"
-    from_port = 80
-    to_port = 80
-    protocol = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
-    security_group_id = aws_security_group.dmz.id
-}
-resource "aws_security_group_rule" "egress_https" {
-    type = "egress"
-    description = "Allow https egress"
-    from_port = 443
-    to_port = 443
-    protocol = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
-    security_group_id = aws_security_group.dmz.id
-}
-resource "aws_security_group_rule" "egress_dns" {
-    type = "egress"
-    description = "Allow DNS egress"
-    from_port = 53
-    to_port = 53
-    protocol = "UDP"
+    description = "Allow egress"
+    from_port = 0
+    to_port = 65535
+    protocol = -1
     cidr_blocks = ["0.0.0.0/0"]
     security_group_id = aws_security_group.dmz.id
 }
@@ -125,20 +109,20 @@ resource "aws_iam_role" "dmz_role" {
     ]
   })
 
-    inline_policy {
-        name = "ec2_access"
+    # inline_policy {
+    #     name = "ec2_access"
 
-        policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [
-            {
-            Action   = ["ec2:*"]
-            Effect   = "Allow"
-            Resource = "*"
-            },
-        ]
-        })
-    }
+    #     policy = jsonencode({
+    #     Version = "2012-10-17"
+    #     Statement = [
+    #         {
+    #         Action   = ["ec2:*"]
+    #         Effect   = "Allow"
+    #         Resource = "*"
+    #         },
+    #     ]
+    #     })
+    # }
 }
 
 resource "aws_iam_instance_profile" "dmz_profile" {
