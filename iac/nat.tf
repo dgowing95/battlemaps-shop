@@ -4,7 +4,9 @@ resource "aws_autoscaling_group" "dmz" {
     max_size = 1
     desired_capacity = 1
     health_check_grace_period = 300
-    availability_zones = data.aws_availability_zones.azs.zone_ids.0
+    availability_zones = [
+        data.aws_availability_zones.azs.zone_ids.0
+    ]
 
 
     launch_template {
