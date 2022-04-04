@@ -76,11 +76,11 @@ EOF
 }
 
 resource "aws_security_group" "dmz" {
-    name = "nat-egress-allowed"
+    name = "dmz-sg"
     description = "Allows egress through the DMZ NAT gateway"
     vpc_id = aws_vpc.vpc.id
     tags = {
-        Name = "nat-egress-allowed"
+        Name = "dmz-sg"
     }
 }
 
