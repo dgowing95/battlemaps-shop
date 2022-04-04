@@ -1,5 +1,5 @@
 resource "aws_autoscaling_group" "dmz" {
-    name = "dmz-asg"
+    name = "dmz-asg-0"
     min_size = 1
     max_size = 1
     desired_capacity = 1
@@ -32,6 +32,9 @@ resource "aws_network_interface" "dmz_eni" {
   security_groups = [
       aws_security_group.dmz.id
   ]
+  tags = {
+        Name = "DMZ-ENI-0"
+  }
 }
 
 resource "aws_key_pair" "key" {
@@ -49,6 +52,13 @@ resource "aws_launch_template" "dmz" {
     }
     network_interfaces {
         network_interface_id = aws_network_interface.dmz_eni.id
+    }
+    tag_specifications {
+        resource_type = "instance"
+
+        tags = {
+        Name = "DMZ-Instance-0"
+        }
     }
     user_data = base64encode(<<EOF
 #!/bin/bash
