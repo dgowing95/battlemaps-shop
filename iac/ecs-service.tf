@@ -5,6 +5,7 @@ resource "aws_ecs_service" "battlemaps" {
     depends_on = [
       aws_iam_policy.battlemaps_exec_policy
     ]
+    task_definition = aws_ecs_task_definition.battlemaps.arn
 
     network_configuration {
       subnets = aws_subnet.private.*.id
