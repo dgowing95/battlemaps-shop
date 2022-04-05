@@ -28,7 +28,8 @@ data "aws_iam_policy_document" "battlemaps_exec_policy" {
     statement {
         actions = [
             "logs:CreateLogStream",
-            "logs:PutLogEvents"
+            "logs:PutLogEvents",
+            "logs:DescribeLogStreams"
         ]
         resources = [
             "arn:aws:logs:eu-north-1:688621974378:log-group:battlemaps-store:*"

@@ -9,7 +9,8 @@ resource "aws_ecs_service" "battlemaps" {
     network_configuration {
       subnets = aws_subnet.private.*.id
       security_groups = [
-          aws_security_group.nat_egress.id
+          aws_security_group.nat_egress.id,
+          aws_security_group.battlemaps_service.id
       ]
     }
 }
