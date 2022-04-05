@@ -1,7 +1,7 @@
 resource "aws_vpc" "vpc" {
   cidr_block = "30.0.0.0/16"
   tags = {
-      Name = "iac_vpc"
+    Name = "iac_vpc"
   }
   enable_dns_hostnames = true
 }
@@ -13,9 +13,9 @@ data "aws_availability_zones" "azs" {
 resource "aws_subnet" "private" {
   count = length(data.aws_availability_zones.azs.names)
 
-  vpc_id     = aws_vpc.vpc.id
-  availability_zone = data.aws_availability_zones.azs.names[count.index]
-  cidr_block = cidrsubnet(aws_vpc.vpc.cidr_block, 8, count.index)
+  vpc_id                  = aws_vpc.vpc.id
+  availability_zone       = data.aws_availability_zones.azs.names[count.index]
+  cidr_block              = cidrsubnet(aws_vpc.vpc.cidr_block, 8, count.index)
   map_public_ip_on_launch = false
 
   tags = {
@@ -26,9 +26,9 @@ resource "aws_subnet" "private" {
 resource "aws_subnet" "public" {
   count = length(data.aws_availability_zones.azs.names)
 
-  vpc_id     = aws_vpc.vpc.id
+  vpc_id            = aws_vpc.vpc.id
   availability_zone = data.aws_availability_zones.azs.names[count.index]
-  cidr_block = cidrsubnet(aws_vpc.vpc.cidr_block, 8, length(data.aws_availability_zones.azs.names) + count.index)
+  cidr_block        = cidrsubnet(aws_vpc.vpc.cidr_block, 8, length(data.aws_availability_zones.azs.names) + count.index)
 
   tags = {
     Name = "pub_subnet_${count.index}"
@@ -56,7 +56,7 @@ resource "aws_route_table" "public" {
 resource "aws_route_table_association" "pub_assoc" {
   count = length(aws_subnet.public)
 
-  subnet_id = aws_subnet.public[count.index].id
+  subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
@@ -64,7 +64,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.vpc.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block           = "0.0.0.0/0"
     network_interface_id = aws_network_interface.dmz_eni.id
   }
 
@@ -73,6 +73,6 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "priv_assoc" {
   count = length(aws_subnet.private)
 
-  subnet_id = aws_subnet.private[count.index].id
+  subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }

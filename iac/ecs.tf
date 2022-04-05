@@ -1,11 +1,11 @@
 resource "aws_ecs_cluster" "main" {
-    name = "iac-cluster"
+  name = "iac-cluster"
 }
 resource "aws_ecs_cluster_capacity_providers" "fargate" {
   cluster_name = aws_ecs_cluster.main.name
   capacity_providers = [
-      "FARGATE",
-      "FARGATE_SPOT"
+    "FARGATE",
+    "FARGATE_SPOT"
   ]
   default_capacity_provider_strategy {
     base              = 1

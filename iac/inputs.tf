@@ -13,26 +13,26 @@ variable "nat_ami" {
   type = string
 }
 variable "nat_instance" {
-  type = string
+  type    = string
   default = "t3.nano"
 }
 variable "public_ssh_key" {
-  type = string
+  type      = string
   sensitive = true
 }
 variable "rds_root_password" {
-  type = string
+  type      = string
   sensitive = true
 }
 variable "battlemaps_db_user" {
-  type = string
+  type      = string
   sensitive = true
 }
 variable "battlemaps_db_pass" {
-  type = string
+  type      = string
   sensitive = true
 }
 variable "battlemaps_db" {
-  type = string
+  type      = string
   sensitive = true
 }
