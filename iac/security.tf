@@ -37,14 +37,14 @@ resource "aws_security_group" "battlemaps_service" {
     }
 }
 
-resource "aws_security_group_rule" "battlemaps_efs_ingress" {
+resource "aws_security_group_rule" "battlemaps_ingress" {
     type = "ingress"
     security_group_id = aws_security_group.battlemaps_service.id
-    description = "Allow EFS ingress"
-    from_port = 2049
-    to_port = 2049
-    protocol = "TCP"
-    source_security_group_id = aws_security_group.efs_sg.id
+    description = "Allow ingress from VPC"
+    from_port = 0
+    to_port = 65535
+    protocol = -1
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
 }
 resource "aws_security_group_rule" "battlemaps_efs_engress" {
     type = "egress"
