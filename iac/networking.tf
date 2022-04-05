@@ -3,6 +3,7 @@ resource "aws_vpc" "vpc" {
   tags = {
       Name = "iac_vpc"
   }
+  enable_dns_hostnames = true
 }
 
 data "aws_availability_zones" "azs" {
