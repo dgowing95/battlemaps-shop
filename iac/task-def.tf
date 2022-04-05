@@ -5,12 +5,12 @@ resource "aws_ecs_task_definition" "battlemaps" {
         "FARGATE"
     ]
     network_mode = "awsvpc"
+    cpu = 256
+    memory = 512
     container_definitions = jsonencode([
         {
             name = "battlemaps"
             image = "wordpress"
-            cpu = 256
-            memory = 512
             essential = true
             portMappings = [
                 {
