@@ -14,6 +14,7 @@ resource "aws_db_instance" "main" {
   backup_retention_period = 14
   backup_window           = "04:00-06:00"
   maintenance_window      = "Mon:00:00-Mon:02:30"
+  skip_final_snapshot = true
 }
 
 resource "aws_db_subnet_group" "main" {
