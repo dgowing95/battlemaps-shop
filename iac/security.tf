@@ -109,3 +109,11 @@ resource "aws_security_group_rule" "db_ingress" {
   protocol                 = "TCP"
   source_security_group_id = aws_security_group.battlemaps_service.id
 }
+resource "aws_security_group_rule" "db_dmz_ingress" {
+  type                     = "ingress"
+  security_group_id        = aws_security_group.db.id
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "TCP"
+  source_security_group_id = aws_security_group.dmz.id
+}
