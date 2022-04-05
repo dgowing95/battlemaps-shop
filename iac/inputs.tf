@@ -20,3 +20,19 @@ variable "public_ssh_key" {
   type = string
   sensitive = true
 }
+variable "rds_root_password" {
+  type = string
+  sensitive = true
+}
+variable "battlemaps_db_user" {
+  type = string
+  sensitive = true
+}
+variable "battlemaps_db_pass" {
+  type = string
+  sensitive = true
+}
+variable "battlemaps_db" {
+  type = string
+  sensitive = true
+}

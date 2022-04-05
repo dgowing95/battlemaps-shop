@@ -30,6 +30,24 @@ resource "aws_ecs_task_definition" "battlemaps" {
                     containerPath = "/var/www/html/wp-content/uploads"
                     sourceVolume = "battlemaps-efs-uploads"
                 }
+            ],
+            secrets = [
+              {
+                name = "WORDPRESS_DB_HOST"
+                valueFrom = aws_ssm_parameter.db_host.arn
+              },
+              {
+                name = "WORDPRESS_DB_USER"
+                valueFrom = aws_ssm_parameter.db_user.arn
+              },
+              {
+                name = "WORDPRESS_DB_PASSWORD"
+                valueFrom = aws_ssm_parameter.db_pass.arn
+              },
+              {
+                name = "WORDPRESS_DB_NAME"
+                valueFrom = aws_ssm_parameter.db.arn
+              }
             ]
             logConfiguration = {
                 logDriver = "awslogs"

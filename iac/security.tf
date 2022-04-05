@@ -56,6 +56,16 @@ resource "aws_security_group_rule" "battlemaps_efs_engress" {
     source_security_group_id = aws_security_group.efs_sg.id
 }
 
+resource "aws_security_group_rule" "battlemaps_db_engress" {
+    type = "egress"
+    security_group_id = aws_security_group.battlemaps_service.id
+    description = "Allow DB Egress"
+    from_port = 3306
+    to_port = 3306
+    protocol = "TCP"
+    source_security_group_id = aws_security_group.db.id
+}
+
 # ====== EFS SG ====
 resource "aws_security_group" "efs_sg" {
     name = "battlemaps-efs-sg"
@@ -81,4 +91,21 @@ resource "aws_security_group_rule" "vpc_efs_egress" {
     to_port = 2049
     protocol = "TCP"
     cidr_blocks = [aws_vpc.vpc.cidr_block]
+}
+# ====== RDS sgs ====
+resource "aws_security_group" "db" {
+    name = "orion-rds-sg"
+    description = "Controls Access to the Orion RDS instance"
+    vpc_id = aws_vpc.vpc.id
+    tags = {
+        Name = "orion-rds-sg"
+    }
+}
+resource "aws_security_group_rule" "db_ingress" {
+    type = "ingress"
+    security_group_id = aws_security_group.db.id
+    from_port = 3306
+    to_port = 3306
+    protocol = "TCP"
+    source_security_group_id = aws_security_group.battlemaps_service.id
 }
