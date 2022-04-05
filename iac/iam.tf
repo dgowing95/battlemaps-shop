@@ -12,7 +12,7 @@ resource "aws_iam_role" "battlemaps_exec_role" {
                 Effect = "Allow"
                 Sid    = ""
                 Principal = {
-                Service = "ecs.amazonaws.com"
+                Service = "ecs-tasks.amazonaws.com"
                 }
             },
         ]
