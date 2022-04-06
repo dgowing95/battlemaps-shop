@@ -43,3 +43,35 @@ variable "cloudflare_api_token" {
   type = string
   sensitive = true
 }
+variable "wp_auth_key" {
+  type = string
+  sensitive = true
+}
+variable "wp_secure_auth_key" {
+  type = string
+  sensitive = true
+}
+variable "wp_logged_in_key" {
+  type = string
+  sensitive = true
+}
+variable "wp_nonce_key" {
+  type = string
+  sensitive = true
+}
+variable "wp_auth_salt" {
+  type = string
+  sensitive = true
+}
+variable "wp_secure_auth_salt" {
+  type = string
+  sensitive = true
+}
+variable "wp_logged_in_salt" {
+  type = string
+  sensitive = true
+}
+variable "wp_nonce_salt" {
+  type = string
+  sensitive = true
+}

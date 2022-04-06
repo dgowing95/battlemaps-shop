@@ -47,6 +47,38 @@ resource "aws_ecs_task_definition" "battlemaps" {
         {
           name      = "WORDPRESS_DB_NAME"
           valueFrom = aws_ssm_parameter.db.arn
+        },
+        {
+          name      = "WP_AUTH_KEY"
+          valueFrom = aws_ssm_parameter.wp_auth_key.arn
+        },
+        {
+          name      = "WP_SECURE_AUTH_KEY"
+          valueFrom = aws_ssm_parameter.wp_secure_auth_key.arn
+        },
+        {
+          name      = "WP_LOGGED_IN_KEY"
+          valueFrom = aws_ssm_parameter.wp_logged_in_key.arn
+        },
+        {
+          name      = "WP_NONCE_KEY"
+          valueFrom = aws_ssm_parameter.wp_nonce_key.arn
+        },
+        {
+          name      = "WP_AUTH_SALT"
+          valueFrom = aws_ssm_parameter.wp_auth_salt.arn
+        },
+        {
+          name      = "WP_SECURE_AUTH_SALT"
+          valueFrom = aws_ssm_parameter.wp_secure_auth_salt.arn
+        },
+        {
+          name      = "WP_LOGGED_IN_SALT"
+          valueFrom = aws_ssm_parameter.wp_logged_in_salt.arn
+        },
+        {
+          name      = "WP_NONCE_SALT"
+          valueFrom = aws_ssm_parameter.wp_nonce_salt.arn
         }
       ],
       environment = [

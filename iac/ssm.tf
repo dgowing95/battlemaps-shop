@@ -23,3 +23,43 @@ resource "aws_ssm_parameter" "db" {
   type  = "SecureString"
   value = var.battlemaps_db
 }
+resource "aws_ssm_parameter" "wp_auth_key" {
+  name = "/battlemaps/wp_auth_key"
+  type = "SecureString"
+  value = var.wp_auth_key
+}
+resource "aws_ssm_parameter" "wp_secure_auth_key" {
+  name = "/battlemaps/wp_secure_auth_key"
+  type = "SecureString"
+  value = var.wp_secure_auth_key
+}
+resource "aws_ssm_parameter" "wp_logged_in_key" {
+  name = "/battlemaps/wp_logged_in_key"
+  type = "SecureString"
+  value = var.wp_logged_in_key
+}
+resource "aws_ssm_parameter" "wp_nonce_key" {
+  name = "/battlemaps/wp_nonce_key"
+  type = "SecureString"
+  value = var.wp_nonce_key
+}
+resource "aws_ssm_parameter" "wp_auth_salt" {
+  name = "/battlemaps/wp_auth_salt"
+  type = "SecureString"
+  value = var.wp_auth_salt
+}
+resource "aws_ssm_parameter" "wp_secure_auth_salt" {
+  name = "/battlemaps/wp_secure_auth_salt"
+  type = "SecureString"
+  value = var.wp_secure_auth_salt
+}
+resource "aws_ssm_parameter" "wp_logged_in_salt" {
+  name = "/battlemaps/wp_logged_in_salt"
+  type = "SecureString"
+  value = var.wp_logged_in_salt
+}
+resource "aws_ssm_parameter" "wp_nonce_salt" {
+  name = "/battlemaps/wp_nonce_salt"
+  type = "SecureString"
+  value = var.wp_nonce_salt
+}
