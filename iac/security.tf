@@ -117,3 +117,37 @@ resource "aws_security_group_rule" "db_dmz_ingress" {
   protocol                 = "TCP"
   source_security_group_id = aws_security_group.dmz.id
 }
+
+# ====== ALB sgs ======
+resource "aws_security_group" "alb" {
+  name        = "orion-alb-sg"
+  description = "Controls Access to the Orion ALB"
+  vpc_id      = aws_vpc.vpc.id
+  tags = {
+    Name = "orion-alb-sg"
+  }
+}
+resource "aws_security_group_rule" "alb_http_ingress" {
+  type                     = "ingress"
+  security_group_id        = aws_security_group.alb.id
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "TCP"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+resource "aws_security_group_rule" "alb_https_ingress" {
+  type                     = "ingress"
+  security_group_id        = aws_security_group.alb.id
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "TCP"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+resource "aws_security_group_rule" "alb_vpc_egress" {
+  type                     = "egress"
+  security_group_id        = aws_security_group.alb.id
+  from_port                = 0
+  to_port                  = 65535
+  protocol                 = -1
+  cidr_blocks = [aws_vpc.vpc.cidr_block]
+}

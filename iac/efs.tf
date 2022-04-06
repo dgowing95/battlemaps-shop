@@ -23,14 +23,44 @@ resource "aws_efs_mount_target" "battlemaps" {
   ]
 }
 
-resource "aws_efs_access_point" "battlemaps-access" {
+resource "aws_efs_access_point" "battlemaps-plugins" {
   file_system_id = aws_efs_file_system.battlemaps.id
   posix_user {
     gid = 33
     uid = 33
   }
   root_directory {
-    path = "/battlemaps"
+    path = "/plugins"
+    creation_info {
+      owner_gid   = 33
+      owner_uid   = 33
+      permissions = 660
+    }
+  }
+}
+resource "aws_efs_access_point" "battlemaps-themes" {
+  file_system_id = aws_efs_file_system.battlemaps.id
+  posix_user {
+    gid = 33
+    uid = 33
+  }
+  root_directory {
+    path = "/themes"
+    creation_info {
+      owner_gid   = 33
+      owner_uid   = 33
+      permissions = 660
+    }
+  }
+}
+resource "aws_efs_access_point" "battlemaps-uploads" {
+  file_system_id = aws_efs_file_system.battlemaps.id
+  posix_user {
+    gid = 33
+    uid = 33
+  }
+  root_directory {
+    path = "/uploads"
     creation_info {
       owner_gid   = 33
       owner_uid   = 33

@@ -64,10 +64,10 @@ resource "aws_ecs_task_definition" "battlemaps" {
 
     efs_volume_configuration {
       file_system_id     = aws_efs_file_system.battlemaps.id
-      root_directory     = "/themes"
+      root_directory     = "/"
       transit_encryption = "ENABLED"
       authorization_config {
-        access_point_id = aws_efs_access_point.battlemaps-access.id
+        access_point_id = aws_efs_access_point.battlemaps-themes.id
       }
     }
   }
@@ -76,10 +76,10 @@ resource "aws_ecs_task_definition" "battlemaps" {
 
     efs_volume_configuration {
       file_system_id     = aws_efs_file_system.battlemaps.id
-      root_directory     = "/plugins"
+      root_directory     = "/"
       transit_encryption = "ENABLED"
       authorization_config {
-        access_point_id = aws_efs_access_point.battlemaps-access.id
+        access_point_id = aws_efs_access_point.battlemaps-plugins.id
       }
     }
   }
@@ -88,10 +88,10 @@ resource "aws_ecs_task_definition" "battlemaps" {
 
     efs_volume_configuration {
       file_system_id     = aws_efs_file_system.battlemaps.id
-      root_directory     = "/uploads"
+      root_directory     = "/"
       transit_encryption = "ENABLED"
       authorization_config {
-        access_point_id = aws_efs_access_point.battlemaps-access.id
+        access_point_id = aws_efs_access_point.battlemaps-uploads.id
       }
     }
   }
