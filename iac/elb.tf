@@ -49,7 +49,11 @@ resource "aws_lb_target_group" "battlemaps" {
     vpc_id = aws_vpc.vpc.id
     target_type = "ip"
     health_check {
-        enabled = false
+        healthy_threshold   = 2
+        unhealthy_threshold = 2
+        interval            = 60
+        path                = "/"
+        matcher = "200-399"
     }
     lifecycle {
         create_before_destroy = true
