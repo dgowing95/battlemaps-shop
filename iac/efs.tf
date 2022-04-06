@@ -34,7 +34,7 @@ resource "aws_efs_access_point" "battlemaps-plugins" {
     creation_info {
       owner_gid   = 33
       owner_uid   = 33
-      permissions = 660
+      permissions = 777
     }
   }
 }
@@ -49,7 +49,7 @@ resource "aws_efs_access_point" "battlemaps-themes" {
     creation_info {
       owner_gid   = 33
       owner_uid   = 33
-      permissions = 660
+      permissions = 777
     }
   }
 }
@@ -64,7 +64,7 @@ resource "aws_efs_access_point" "battlemaps-uploads" {
     creation_info {
       owner_gid   = 33
       owner_uid   = 33
-      permissions = 660
+      permissions = 777
     }
   }
 }
