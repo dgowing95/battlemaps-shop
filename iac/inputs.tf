@@ -39,10 +39,6 @@ variable "battlemaps_db" {
 variable "site_url" {
   type = string
 }
-variable "cloudflare_email" {
-  type = string
-  sensitive = true
-}
 variable "cloudflare_api_token" {
   type = string
   sensitive = true
