@@ -48,6 +48,12 @@ resource "aws_ecs_task_definition" "battlemaps" {
           name      = "WORDPRESS_DB_NAME"
           valueFrom = aws_ssm_parameter.db.arn
         }
+      ],
+      environment = [
+        {
+          name = "WORDPRESS_TABLE_PREFIX"
+          value = "wp"
+        }
       ]
       logConfiguration = {
         logDriver = "awslogs"
