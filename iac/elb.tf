@@ -62,10 +62,10 @@ resource "aws_lb_listener_rule" "battlemaps" {
     action {
         type = "forward"
         target_group_arn = aws_lb_target_group.battlemaps.arn
-        condition {
-            host_header {
-                values = [var.site_url]
-            }
+    }
+    condition {
+        host_header {
+            values = [var.site_url]
         }
     }
 }
