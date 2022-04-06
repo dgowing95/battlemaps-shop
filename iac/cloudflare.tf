@@ -14,7 +14,7 @@ resource "cloudflare_record" "acm_validation" {
   }
   zone_id = cloudflare_zone.battlemaps.id
   name = each.value.name
-  value = trimsuffix(each.value.record, ".")
+  value = trimsuffix(each.value.value, ".")
   type = each.value.type
   proxied = false
 
