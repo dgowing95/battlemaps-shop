@@ -47,4 +47,26 @@ resource "aws_lb_target_group" "battlemaps" {
     port = "80"
     protocol = "HTTP"
     vpc_id = aws_vpc.vpc.id
+    target_type = "ip"
+    name_prefix = "bmshop"
+    health_check {
+        enabled = false
+    }
+    lifecycle {
+        create_before_destroy = true
+    }
+}
+
+resource "aws_lb_listener_rule" "battlemaps" {
+    listener_arn = aws_lb_listener.https.arn
+    priority = 1
+    action {
+        type = "forward"
+        target_group_arn = aws_lb_target_group.battlemaps.arn
+        condition {
+            host_header {
+                values = [var.site_url]
+            }
+        }
+    }
 }
