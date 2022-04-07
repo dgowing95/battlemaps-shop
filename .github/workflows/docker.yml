@@ -1,0 +1,18 @@
+name: Build And Push Docker Image
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  
+jobs:
+  Build-Push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          cd src && \
+          docker build . -t minichambre/wordpress:latest
+      - run: |
+          docker login --username ${ secrets.user } --password ${ secrets.password }
+          docker push minichambre/wordpress:latest
