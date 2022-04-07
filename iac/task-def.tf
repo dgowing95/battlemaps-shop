@@ -10,7 +10,7 @@ resource "aws_ecs_task_definition" "battlemaps" {
   container_definitions = jsonencode([
     {
       name      = "battlemaps"
-      image     = "wordpress"
+      image     = "minichambre/wordpress:latest"
       essential = true
       portMappings = [
         {

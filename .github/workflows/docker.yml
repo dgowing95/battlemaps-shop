@@ -14,5 +14,5 @@ jobs:
           cd src && \
           docker build . -t minichambre/wordpress:latest
       - run: |
-          docker login --username ${ secrets.USER } --password ${ secrets.PASSWORD }
+          docker login --username ${{ secrets.USER }} --password ${{ secrets.PASSWORD }}
           docker push minichambre/wordpress:latest
