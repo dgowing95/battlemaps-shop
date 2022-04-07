@@ -5,8 +5,8 @@ resource "aws_ecs_task_definition" "battlemaps" {
     "FARGATE"
   ]
   network_mode = "awsvpc"
-  cpu          = 512
-  memory       = 1024
+  cpu          = 256
+  memory       = 512
   container_definitions = jsonencode([
     {
       name      = "battlemaps"

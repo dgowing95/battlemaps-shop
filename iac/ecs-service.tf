@@ -1,7 +1,7 @@
 resource "aws_ecs_service" "battlemaps" {
   name          = "Battlemaps"
   cluster       = aws_ecs_cluster.main.id
-  desired_count = 2
+  desired_count = 1
   depends_on = [
     aws_iam_policy.battlemaps_exec_policy
   ]
